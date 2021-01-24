@@ -64,6 +64,24 @@ def get_movie(id):
     movie = Movie.query.get(id)
     return movie_schema.jsonify(movie)
 
+# Endpoint for updating a movie
+@app.route("/movie/<id>", methods=["PUT"])
+def movie_update(id):
+    movie = Movie.query.get(id)
+    title = request.json['title']
+    year = request.json['year']
+    rating = request.json['rating']
+    genre = request.json['genre']
+    starring = request.json['starring']
+
+    movie.title = title
+    movie.year = year
+    movie.rating = rating
+    movie.genre = genre
+    movie.starring = starring
+
+    db.session.commit()
+    return movie_schema.jsonify(movie)
 
 if __name__ == '__main__':
     app.run(debug = True)
