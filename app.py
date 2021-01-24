@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import os
@@ -28,10 +28,29 @@ class Movie(db.Model):
 
 class MovieSchema(ma.Schema):
     class Meta:
-        fields = ('title', 'content')
+        fields = ('title', 'year', 'rating', 'genre', 'starring')
 
 movie_schema = MovieSchema()
 movie_schema = MovieSchema(many = True)
+
+# Endpoint to create a new guide
+@app.route('/movie', methods = ["POST"])
+def add_movie():
+    title = request.json['title']
+    year = request.json['year']
+    rating = request.json['rating']
+    genre = request.json['genre']
+    starring = request.json['starring']
+
+    new_movie = Movie(title, year, rating, genre, starring)
+
+    db.session.add(new_movie)
+    db.session.commit()
+
+    movie = Movie.query.get(new_movie.id)
+
+    return movie_schema.jsonify(movie)
+
 
 if __name__ == '__main__':
     app.run(debug = True)
