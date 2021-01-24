@@ -52,11 +52,18 @@ def add_movie():
     return movie_schema.jsonify(movie)
 
 # Endpoint to query all movies
-@app.route('/movies', methods=["GET"])
+@app.route('/movies', methods = ["GET"])
 def get_movies():
     all_movies = Movie.query.all()
     result = movies_schema.dump(all_movies)
     return jsonify(result)
+
+# Endpoint to query a movie
+@app.route('/movie/<id>', methods = ["GET"])
+def get_movie(id):
+    movie = Movie.query.get(id)
+    return movie_schema.jsonify(movie)
+
 
 if __name__ == '__main__':
     app.run(debug = True)
