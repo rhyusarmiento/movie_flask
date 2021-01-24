@@ -51,6 +51,5 @@ def add_movie():
 
     return movie_schema.jsonify(movie)
 
-
 if __name__ == '__main__':
     app.run(debug = True)
