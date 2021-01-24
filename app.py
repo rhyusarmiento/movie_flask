@@ -31,9 +31,9 @@ class MovieSchema(ma.Schema):
         fields = ('title', 'year', 'rating', 'genre', 'starring')
 
 movie_schema = MovieSchema()
-movie_schema = MovieSchema(many = True)
+movies_schema = MovieSchema(many = True)
 
-# Endpoint to create a new guide
+# Endpoint to create a new movie
 @app.route('/movie', methods = ["POST"])
 def add_movie():
     title = request.json['title']
@@ -50,6 +50,13 @@ def add_movie():
     movie = Movie.query.get(new_movie.id)
 
     return movie_schema.jsonify(movie)
+
+# Endpoint to query all movies
+@app.route('/movies', methods=["GET"])
+def get_movies():
+    all_movies = Movie.query.all()
+    result = movies_schema.dump(all_movies)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug = True)
