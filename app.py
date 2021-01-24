@@ -83,5 +83,15 @@ def movie_update(id):
     db.session.commit()
     return movie_schema.jsonify(movie)
 
+# Endpoint for deleting a movie
+@app.route("/movie/<id>", methods=["DELETE"])
+def movie_delete(id):
+    movie = Movie.query.get(id)
+    db.session.delete(movie)
+    db.session.commit()
+
+    return "Movie was successfully deleted"
+
+
 if __name__ == '__main__':
     app.run(debug = True)
